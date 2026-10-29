@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="GOOSELoc: a multimodal benchmark for ground-to-aerial localization in unstructured off-road terrain, with surround-view RGB, 3D LiDAR and geo-referenced aerial orthophotos across all four seasons.">
+  <meta name="keywords" content="GOOSELoc, cross-view localization, ground-to-aerial, off-road, LiDAR, orthophoto, benchmark, dataset, WACV">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GOOSELoc: Ground-to-Aerial Localization in Unstructured Off-Road Terrain</title>
+
+  <meta property="og:title" content="GOOSELoc: A Multimodal Benchmark for Ground-to-Aerial Localization in Unstructured Off-Road Terrain">
+  <meta property="og:description" content="9,356 off-road scenes with surround-view RGB, 128-beam LiDAR and 20 cm aerial orthophotos across all four seasons. WACV 2027.">
+  <meta property="og:image" content="https://gooseloc.github.io/static/images/teaser.webp">
+  <meta property="og:url" content="https://gooseloc.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.png">
+
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <img class="publication-logo" src="./static/images/logo.png" alt="GOOSELoc logo">
+          <h1 class="title is-2 publication-title">A Multimodal Benchmark for Ground-to-Aerial Localization in Unstructured Off-Road Terrain</h1>
+          <div class="is-size-5 publication-authors">
+            <!-- TODO: add personal homepage links to the author names -->
+            <span class="author-block">Fabian Deuser<sup>1,3</sup>,</span>
+            <span class="author-block">Peter Mortimer<sup>2</sup>,</span>
+            <span class="author-block">Robin-Nico Kampa<sup>1</sup>,</span>
+            <span class="author-block">Anna Bößendörfer<sup>1</sup>,</span>
+            <span class="author-block">Mirko Mählisch<sup>2</sup>,</span>
+            <span class="author-block">Martin Werner<sup>3</sup>,</span>
+            <span class="author-block">Norbert Oswald<sup>1</sup></span>
+          </div>
+
+          <div class="affiliations">
+            <span class="author-block"><sup>1</sup>Institute of Distributed Intelligent Systems, University of the Bundeswehr Munich</span><br>
+            <span class="author-block"><sup>2</sup>Institute for Autonomous Driving, University of the Bundeswehr Munich</span><br>
+            <span class="author-block"><sup>3</sup>Professorship of Big Geospatial Data Management, Technical University of Munich</span>
+          </div>
+
+          <div class="publication-venue is-size-5">WACV 2027</div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- TODO: replace "#" links once arXiv / data DOI exist -->
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper (soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv (soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon"><i class="fas fa-file-alt"></i></span>
+                  <span>Supplementary (soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code (soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#download" class="external-link button is-normal is-rounded is-dark" disabled>
+                  <span class="icon"><i class="fas fa-database"></i></span>
+                  <span>Data (soon)</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body figure">
+      <img src="./static/images/teaser.webp" alt="GOOSELoc sample: camera layout, four surround images, LiDAR sweep and aerial orthophoto">
+      <h2 class="subtitle has-text-centered figure-caption">
+        Every <b>GOOSELoc</b> scene pairs four surround-view cameras and a 128-beam LiDAR sweep with a
+        geo-referenced summer orthophoto. Ground-truth position and heading come from an RTK-corrected INS.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Cross-view pose estimation estimates a ground camera's geographic pose by matching onboard sensor data
+            with geo-referenced overhead imagery. This is particularly relevant when GNSS is unreliable, for example
+            under forest canopy or in urban canyons. Existing metric cross-view benchmarks, such as VIGOR and
+            cross-view KITTI, are dominated by urban and road scenes with strong human-made structure without
+            off-road terrain.
+          </p>
+          <p>
+            We introduce <b>GOOSELoc</b>, a multimodal benchmark for ground-to-aerial localization in unstructured
+            environments, including forests, fields, and rural tracks. GOOSELoc comprises 9,356 scenes recorded across
+            all four seasons around Munich, Germany, pairing geo-referenced aerial orthophotos with surround-view RGB
+            imagery and 3D LiDAR point clouds. Paved/unpaved labels enable analyzing the impact of terrain structure,
+            while the seasonal recordings allow studying the appearance gap to mostly summer-captured orthophotos.
+          </p>
+          <p>
+            To assess the transferability of existing methods, we adapt and fine-tune four state-of-the-art
+            cross-view localization baselines on GOOSELoc. Despite task-specific fine-tuning, the performance degrades
+            substantially in off-road environments. We therefore propose a multimodal baseline combining surround-view
+            imagery and LiDAR geometry, improving localization performance and providing a stronger reference for
+            future work.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Key numbers. -->
+    <div class="columns is-centered has-text-centered stats is-mobile is-multiline">
+      <div class="column is-one-fifth-desktop is-half-mobile">
+        <div class="stat-value">9,356</div>
+        <div class="stat-label">scenes</div>
+      </div>
+      <div class="column is-one-fifth-desktop is-half-mobile">
+        <div class="stat-value">4&times;</div>
+        <div class="stat-label">surround cameras<br>2448&times;1000 px</div>
+      </div>
+      <div class="column is-one-fifth-desktop is-half-mobile">
+        <div class="stat-value">128</div>
+        <div class="stat-label">beam LiDAR</div>
+      </div>
+      <div class="column is-one-fifth-desktop is-half-mobile">
+        <div class="stat-value">20 cm</div>
+        <div class="stat-label">GSD orthophotos</div>
+      </div>
+      <div class="column is-one-fifth-desktop is-half-mobile">
+        <div class="stat-value">4</div>
+        <div class="stat-label">seasons</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <!-- Dataset. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">The Dataset</h2>
+        <div class="content has-text-justified">
+          <p>
+            GOOSELoc builds on the <a href="https://goose-dataset.de/">German Outdoor and Offroad Dataset (GOOSE)</a>
+            and covers a ~45&nbsp;km &times; 16&nbsp;km band of Upper Bavaria south of Munich. Each scene contains
+            four time-synchronized RGB views (front, right, back, left) giving full 360&deg; coverage, a single
+            LiDAR sweep, and a 1024&times;1024&nbsp;px crop (204.8&nbsp;m &times; 204.8&nbsp;m) of the Bavarian DOP20
+            orthophotos. Because the orthophotos are flown in summer independently of the ground drives, every
+            ground-aerial pair carries a built-in temporal gap: vegetation state, snow cover and construction differ
+            between views. The dataset is close to terrain-balanced (45.8% paved, 54.2% unpaved).
+          </p>
+        </div>
+
+        <h3 class="title is-4">Geographic splits</h3>
+        <div class="columns is-vcentered">
+          <div class="column is-7 figure">
+            <img src="./static/images/splits.webp" alt="Map of train, dev and test regions">
+          </div>
+          <div class="column is-5 content has-text-justified">
+            <p>
+              Train, dev and test are partitioned on a 1&nbsp;km &times; 1&nbsp;km grid so that they cover disjoint
+              regions. A model can therefore not succeed by recognizing a location it has seen during training.
+              The assignment balances split size (&asymp;70/10/20), terrain class and season.
+            </p>
+          </div>
+        </div>
+
+        <div class="results-table">
+          <table class="table is-narrow is-hoverable">
+            <thead>
+              <tr><th>Split</th><th>Winter</th><th>Spring</th><th>Summer</th><th>Autumn</th><th>Paved</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>train</td><td>1,387</td><td>1,976</td><td>1,341</td><td>1,726</td><td>2,988</td><td>6,430</td></tr>
+              <tr><td>dev</td><td>154</td><td>304</td><td>103</td><td>503</td><td>400</td><td>1,064</td></tr>
+              <tr><td>test</td><td>332</td><td>608</td><td>532</td><td>390</td><td>900</td><td>1,862</td></tr>
+              <tr><th>Total</th><th>1,873</th><th>2,888</th><th>1,976</th><th>2,619</th><th>4,288</th><th>9,356</th></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="title is-4">Two heading settings</h3>
+        <div class="columns is-vcentered">
+          <div class="column is-6 figure">
+            <img src="./static/images/heading.webp" alt="North-up and IMU-prior heading settings">
+          </div>
+          <div class="column is-6 content has-text-justified">
+            <p>
+              <b>North-up</b> provides no heading prior: the model receives a north-aligned overhead tile and
+              must recover the full 360&deg; orientation. <b>IMU &plusmn;10&deg;</b> mimics a coarse onboard
+              heading estimate: the tile is pre-rotated to the vehicle heading with a random mismatch of up to
+              &plusmn;10&deg;, and the model predicts the residual.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Dataset. -->
+
+    <!-- Method. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">RGB&ndash;LiDAR Baseline</h2>
+        <div class="figure">
+          <img src="./static/images/arch.webp" alt="Architecture of the RGB-LiDAR fusion baseline">
+        </div>
+        <div class="content has-text-justified figure-caption">
+          <p>
+            Frozen DINOv3 (images and aerial tile) and Utonia (LiDAR, with LoRA) produce a shared token set.
+            In the position branch each modality correlates its own query with the overhead patch features, and an
+            evidence gate weights the resulting score maps before they are summed. The heading branch correlates
+            camera tokens and LiDAR wedge tokens against the tile and feeds the match maps to a 72-bin heading
+            classifier.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Method. -->
+
+    <!-- Results. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Benchmark Results</h2>
+        <div class="content has-text-justified">
+          <p>
+            Mean and median error for position (m) and orientation (&deg;) on dev and test, averaged over three seeds.
+            Best per column within each setting in bold. Existing methods, even after fine-tuning, degrade
+            substantially off-road. LiDAR is the stronger single modality for position, cameras resolve the
+            front/back heading ambiguity, and the fusion combines both.
+          </p>
+        </div>
+        <div class="results-table">
+          <table class="table is-narrow is-hoverable">
+            <thead>
+              <tr>
+                <th rowspan="3"></th><th rowspan="3"></th>
+                <th colspan="4">dev</th><th colspan="4">test</th>
+              </tr>
+              <tr>
+                <th colspan="2">Position (m) &darr;</th><th colspan="2">Orientation (&deg;) &darr;</th>
+                <th colspan="2">Position (m) &darr;</th><th colspan="2">Orientation (&deg;) &darr;</th>
+              </tr>
+              <tr>
+                <th>Mean</th><th>Median</th><th>Mean</th><th>Median</th>
+                <th>Mean</th><th>Median</th><th>Mean</th><th>Median</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="setting-row"><td colspan="10">North-up</td></tr>
+              <tr><td></td><td>Predict center</td><td>38.9</td><td>40.9</td><td>90.0</td><td>90.0</td><td>39.7</td><td>41.5</td><td>90.0</td><td>90.0</td></tr>
+              <tr><td></td><td>CCVPE (surround)</td><td>33.6<span class="std">±0.4</span></td><td>25.7<span class="std">±1.3</span></td><td>37.2<span class="std">±8.5</span></td><td>16.7<span class="std">±12.2</span></td><td>45.4<span class="std">±2.9</span></td><td>37.0<span class="std">±2.9</span></td><td>52.8<span class="std">±5.0</span></td><td>35.6<span class="std">±17.0</span></td></tr>
+              <tr><td></td><td>HC-Net (surround)</td><td>31.3<span class="std">±0.2</span></td><td>27.3<span class="std">±0.6</span></td><td>85.7<span class="std">±1.5</span></td><td>84.2<span class="std">±4.8</span></td><td>31.8<span class="std">±0.4</span></td><td>28.6<span class="std">±0.2</span></td><td>87.0<span class="std">±0.5</span></td><td>84.4<span class="std">±1.2</span></td></tr>
+              <tr><td></td><td>FG² (front)</td><td>32.8<span class="std">±0.9</span></td><td>29.3<span class="std">±0.2</span></td><td>89.9<span class="std">±0.4</span></td><td>91.3<span class="std">±0.4</span></td><td>37.7<span class="std">±1.2</span></td><td>35.1<span class="std">±0.8</span></td><td>92.0<span class="std">±0.2</span></td><td>93.4<span class="std">±0.1</span></td></tr>
+              <tr><td></td><td>FG² (surround)</td><td>30.4<span class="std">±0.2</span></td><td>28.0<span class="std">±0.3</span></td><td>89.7<span class="std">±0.1</span></td><td>90.4<span class="std">±0.1</span></td><td>34.4<span class="std">±0.4</span></td><td>32.1<span class="std">±0.3</span></td><td>92.5<span class="std">±0.1</span></td><td>93.1<span class="std">±0.3</span></td></tr>
+              <tr class="ours"><td></td><td>Ours (RGB)</td><td>25.9<span class="std">±0.1</span></td><td>21.8<span class="std">±0.2</span></td><td>30.2<span class="std">±4.0</span></td><td>11.5<span class="std">±0.9</span></td><td>29.8<span class="std">±0.1</span></td><td>25.5<span class="std">±0.1</span></td><td>49.0<span class="std">±5.3</span></td><td>27.9<span class="std">±3.3</span></td></tr>
+              <tr class="ours"><td></td><td>Ours (LiDAR-only)</td><td>23.9<span class="std">±0.4</span></td><td>19.8<span class="std">±0.4</span></td><td>58.3<span class="std">±4.0</span></td><td>16.5<span class="std">±2.0</span></td><td>28.7<span class="std">±0.3</span></td><td>24.9<span class="std">±0.8</span></td><td>64.3<span class="std">±3.6</span></td><td>38.5<span class="std">±5.4</span></td></tr>
+              <tr class="ours"><td></td><td>Ours (RGB+L)</td><td><b>23.1<span class="std">±0.3</span></b></td><td><b>18.8<span class="std">±0.2</span></b></td><td><b>26.2<span class="std">±1.0</span></b></td><td><b>10.2<span class="std">±0.4</span></b></td><td><b>27.1<span class="std">±0.3</span></b></td><td><b>22.2<span class="std">±0.6</span></b></td><td><b>46.3<span class="std">±1.1</span></b></td><td><b>24.8<span class="std">±0.3</span></b></td></tr>
+              <tr class="setting-row"><td colspan="10">IMU ±10°</td></tr>
+              <tr><td></td><td>Shi et al. (front)</td><td>32.4</td><td>22.7</td><td><b>3.3</b></td><td><b>2.5</b></td><td>35.4</td><td>26.6</td><td><b>4.1</b></td><td><b>3.2</b></td></tr>
+              <tr><td></td><td>HC-Net (surround)</td><td>29.8<span class="std">±0.5</span></td><td>26.2<span class="std">±0.5</span></td><td>12.4<span class="std">±0.6</span></td><td>8.9<span class="std">±0.5</span></td><td>31.9<span class="std">±3.3</span></td><td>27.2<span class="std">±0.3</span></td><td>15.0<span class="std">±1.5</span></td><td>11.7<span class="std">±0.8</span></td></tr>
+              <tr><td></td><td>FG² (front)</td><td>23.1<span class="std">±0.4</span></td><td>17.0<span class="std">±0.4</span></td><td>5.2<span class="std">±0.2</span></td><td>3.7<span class="std">±0.1</span></td><td>29.2<span class="std">±0.3</span></td><td>24.6<span class="std">±0.6</span></td><td>6.6<span class="std">±0.1</span></td><td>4.8<span class="std">±0.1</span></td></tr>
+              <tr><td></td><td>FG² (surround)</td><td>19.8<span class="std">±0.2</span></td><td>14.5<span class="std">±0.3</span></td><td>4.3<span class="std">±0.1</span></td><td>3.6<span class="std">±0.1</span></td><td>25.0<span class="std">±0.4</span></td><td>20.2<span class="std">±0.6</span></td><td>5.1<span class="std">±0.1</span></td><td>4.4<span class="std">±0.2</span></td></tr>
+              <tr class="ours"><td></td><td>Ours (RGB)</td><td>21.1<span class="std">±0.0</span></td><td>16.3<span class="std">±0.1</span></td><td>3.8<span class="std">±0.1</span></td><td>3.0<span class="std">±0.1</span></td><td>25.1<span class="std">±0.1</span></td><td>20.7<span class="std">±0.2</span></td><td>4.6<span class="std">±0.1</span></td><td>3.9<span class="std">±0.1</span></td></tr>
+              <tr class="ours"><td></td><td>Ours (LiDAR-only)</td><td>16.9<span class="std">±0.2</span></td><td>11.3<span class="std">±0.2</span></td><td>3.4<span class="std">±0.0</span></td><td>2.6<span class="std">±0.1</span></td><td>21.2<span class="std">±0.2</span></td><td>16.1<span class="std">±0.1</span></td><td>4.2<span class="std">±0.1</span></td><td>3.5<span class="std">±0.1</span></td></tr>
+              <tr class="ours"><td></td><td>Ours (RGB+L)</td><td><b>16.2<span class="std">±0.2</span></b></td><td><b>10.5<span class="std">±0.3</span></b></td><td>3.7<span class="std">±0.1</span></td><td>2.8<span class="std">±0.0</span></td><td><b>19.5<span class="std">±0.3</span></b></td><td><b>14.1<span class="std">±0.1</span></b></td><td>4.6<span class="std">±0.1</span></td><td>3.8<span class="std">±0.1</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="title is-4">Qualitative results</h3>
+        <div class="columns is-centered">
+          <div class="column is-8 figure">
+            <img src="./static/images/qual.webp" alt="Qualitative predictions on the GOOSELoc test set">
+            <p class="figure-caption has-text-centered">
+              Test predictions (north-up, no prior). Gold star/arrow: ground truth, red circle/arrow: prediction,
+              viridis overlay: predicted position posterior.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Results. -->
+
+    <!-- Download. -->
+    <div class="columns is-centered" id="download">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Download</h2>
+        <div class="content has-text-justified">
+          <!-- TODO: link to the UniBw library record / DOI and state the data license -->
+          <p>
+            The dataset will be hosted by the library of the University of the Bundeswehr Munich and receive a
+            persistent DOI. Download links, the data license and a loader for PyTorch will be published here and in the
+            GitHub repository.
+          </p>
+          <p>
+            Orthophotos: &copy; Bayerische Vermessungsverwaltung. Ground data derived from
+            <a href="https://goose-dataset.de/">GOOSE</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Download. -->
+
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{deuser2027gooseloc,
+  title     = {{GOOSELoc}: A Multimodal Benchmark for Ground-to-Aerial Localization in Unstructured Off-Road Terrain},
+  author    = {Deuser, Fabian and Mortimer, Peter and Kampa, Robin-Nico and B{\"o}{\ss}end{\"o}rfer, Anna and M{\"a}hlisch, Mirko and Werner, Martin and Oswald, Norbert},
+  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  year      = {2027}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="https://github.com/gooseloc" class="external-link">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+            It is based on the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> project page template.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

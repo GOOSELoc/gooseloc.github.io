@@ -1,0 +1,129 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.footer .icon-link {
+  font-size: 25px;
+  color: #000;
+}
+
+.link-block a {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.publication-title,
+.publication-authors,
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-logo {
+  max-width: 520px;
+  width: 85%;
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+.publication-venue {
+  color: #555;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.publication-authors a {
+  color: hsl(204, 86%, 53%) !important;
+}
+
+.publication-authors a:hover {
+  text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.affiliations {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.figure img {
+  width: 100%;
+  height: auto;
+}
+
+.figure-caption {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 0.75rem;
+}
+
+.stats .stat-value {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 1.9rem;
+  font-weight: bold;
+  color: #3e9bd6;
+  line-height: 1.2;
+}
+
+.stats .stat-label {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.results-table {
+  overflow-x: auto;
+}
+
+.results-table table {
+  font-size: 0.88rem;
+  margin: 0 auto;
+}
+
+.results-table td,
+.results-table th {
+  text-align: center !important;
+  white-space: nowrap;
+}
+
+.results-table td:first-child,
+.results-table td:nth-child(2) {
+  text-align: left !important;
+}
+
+.results-table .ours td {
+  background: #fdf3ea;
+}
+
+.results-table .std {
+  font-size: 0.75em;
+  color: #888;
+}
+
+.results-table .setting-row td {
+  background: #f5f5f5;
+  font-weight: bold;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+/* let wide tables scroll inside their column instead of stretching it */
+.columns .column {
+  min-width: 0;
+}
+
+.results-table {
+  margin-bottom: 2rem;
+}
+
+h3.title {
+  margin-top: 2rem;
+}
