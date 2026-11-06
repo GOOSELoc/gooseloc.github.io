@@ -15,7 +15,7 @@ const SPLIT_COLORS = ['#7c93b8', '#e3a33b', '#d9534f'];   // train, dev, test
 const state = {
   scenes: [],
   cur: null,
-  setting: 'imu_prior',
+  setting: 'north_up',
   layers: { lidar: true, posterior: true, prediction: true, gt: true },
   season: 'all',
   terrain: 'all',
