@@ -23,6 +23,8 @@ body {
   width: 85%;
   margin: 0 auto 1rem;
   display: block;
+  /* the logo has a white background; let the hero gradient show through it */
+  mix-blend-mode: multiply;
 }
 
 .publication-venue {
@@ -126,4 +128,96 @@ pre {
 
 h3.title {
   margin-top: 2rem;
+}
+
+/* navigation ---------------------------------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: saturate(160%) blur(10px);
+  -webkit-backdrop-filter: saturate(160%) blur(10px);
+  border-bottom: 1px solid #e6e9ef;
+}
+
+.site-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.55rem 1rem;
+  overflow-x: auto;
+}
+
+.site-nav-brand {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1d2433;
+  white-space: nowrap;
+}
+
+.site-nav-links {
+  display: flex;
+  gap: 1.1rem;
+  flex: 1;
+}
+
+.site-nav-links a,
+.site-nav-ext a {
+  color: #5d6677;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.site-nav-links a:hover,
+.site-nav-ext a:hover {
+  color: #1d2433;
+}
+
+.site-nav-ext {
+  display: flex;
+  gap: 0.9rem;
+}
+
+@media (max-width: 720px) {
+  .site-nav-links {
+    display: none;
+  }
+  .site-nav-inner {
+    justify-content: space-between;
+  }
+}
+
+/* hero ------------------------------------------------------------------------ */
+
+.hero.is-top {
+  background:
+    radial-gradient(1200px 400px at 50% -10%, rgba(47, 111, 214, 0.09), transparent 70%),
+    #fff;
+}
+
+.publication-links .button[disabled] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.download-block pre {
+  background: #0f141c;
+  color: #e6e9ef;
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+.license-table td,
+.license-table th {
+  font-size: 0.9rem;
 }

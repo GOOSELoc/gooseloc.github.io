@@ -22,13 +22,40 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/explorer.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="icon" href="./static/images/favicon.png">
 
   <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="importmap">
+    {"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                 "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+  </script>
+  <script type="module" src="./static/js/explorer.js"></script>
 </head>
 <body>
 
-<section class="hero">
+<nav class="site-nav" aria-label="Sections">
+  <div class="site-nav-inner">
+    <a class="site-nav-brand" href="#top">GOOSELoc</a>
+    <div class="site-nav-links">
+      <a href="#explorer">Explore a scene</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#dataset">Dataset</a>
+      <a href="#method">Baseline</a>
+      <a href="#results">Results</a>
+      <a href="#download">Download</a>
+      <a href="#BibTeX">BibTeX</a>
+    </div>
+    <div class="site-nav-ext">
+      <a href="https://github.com/Skyy93/GOOSELoc" aria-label="Code on GitHub"><i class="fab fa-github"></i> Code</a>
+      <a href="https://huggingface.co/datasets/Skyy93/GOOSELoc" aria-label="Data on Hugging Face"><i class="fas fa-database"></i> Data</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero is-top" id="top">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
@@ -42,21 +69,22 @@
             <span class="author-block">Robin-Nico Kampa<sup>1</sup>,</span>
             <span class="author-block">Anna Bößendörfer<sup>1</sup>,</span>
             <span class="author-block">Mirko Mählisch<sup>2</sup>,</span>
-            <span class="author-block">Martin Werner<sup>3</sup>,</span>
+            <span class="author-block">Martin Werner<sup>3,4</sup>,</span>
             <span class="author-block">Norbert Oswald<sup>1</sup></span>
           </div>
 
           <div class="affiliations">
             <span class="author-block"><sup>1</sup>Institute of Distributed Intelligent Systems, University of the Bundeswehr Munich</span><br>
             <span class="author-block"><sup>2</sup>Institute for Autonomous Driving, University of the Bundeswehr Munich</span><br>
-            <span class="author-block"><sup>3</sup>Professorship of Big Geospatial Data Management, Technical University of Munich</span>
+            <span class="author-block"><sup>3</sup>TUM School of Engineering and Design, Department of Aerospace and Geodesy, Technical University of Munich</span><br>
+            <span class="author-block"><sup>4</sup>TUM School of Computation, Information and Technology; Munich Data Science Institute (MDSI), Technical University of Munich</span>
           </div>
 
           <div class="publication-venue is-size-5">WACV 2027</div>
 
           <div class="column has-text-centered">
             <div class="publication-links">
-              <!-- TODO: replace "#" links once arXiv / data DOI exist -->
+              <!-- TODO: link the paper, arXiv and supplementary once they are online -->
               <span class="link-block">
                 <a href="#" class="external-link button is-normal is-rounded is-dark" disabled>
                   <span class="icon"><i class="fas fa-file-pdf"></i></span>
@@ -76,15 +104,15 @@
                 </a>
               </span>
               <span class="link-block">
-                <a href="#" class="external-link button is-normal is-rounded is-dark" disabled>
+                <a href="https://github.com/Skyy93/GOOSELoc" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fab fa-github"></i></span>
-                  <span>Code (soon)</span>
+                  <span>Code</span>
                 </a>
               </span>
               <span class="link-block">
-                <a href="#download" class="external-link button is-normal is-rounded is-dark" disabled>
+                <a href="https://huggingface.co/datasets/Skyy93/GOOSELoc" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-database"></i></span>
-                  <span>Data (soon)</span>
+                  <span>Data</span>
                 </a>
               </span>
             </div>
@@ -101,13 +129,141 @@
       <img src="./static/images/teaser.webp" alt="GOOSELoc sample: camera layout, four surround images, LiDAR sweep and aerial orthophoto">
       <h2 class="subtitle has-text-centered figure-caption">
         Every <b>GOOSELoc</b> scene pairs four surround-view cameras and a 128-beam LiDAR sweep with a
-        geo-referenced summer orthophoto. Ground-truth position and heading come from an RTK-corrected INS.
+        geo-referenced summer orthophoto. Ground-truth position and heading come from an INS with RTK correction.
       </h2>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="explorer-section" id="explorer">
+  <div class="has-text-centered">
+    <h2 class="title is-3">Explore a scene</h2>
+    <p class="explorer-intro">
+      Sixteen test scenes from all seasons and both terrain types, with the output of our RGB baseline
+      (seed 0). The LiDAR sweep is drawn at the ground-truth pose, so where it lines up with paths and
+      tree edges you can see how well the aerial image still matches the ground. Switch between the two
+      heading settings to see the tile the way the model gets it.
+    </p>
+  </div>
+
+  <div id="explorer-app" tabindex="-1">
+    <div class="ex-error">The scene explorer could not be loaded.</div>
+    <script>
+      // modules and fetch do not work on file://, so explorer.js never runs there
+      if (location.protocol === 'file:') {
+        document.getElementById('explorer-app').classList.add('has-error');
+        document.querySelector('#explorer-app .ex-error').textContent =
+          'The scene explorer needs a web server. Run "python3 -m http.server" in this folder and open http://localhost:8000.';
+      }
+    </script>
+    <div class="ex-body">
+      <div class="ex-toolbar">
+        <div class="ex-group" role="group" aria-label="Season">
+          <span class="ex-group-label">Season</span>
+          <button class="ex-chip is-active" data-season="all">All</button>
+          <button class="ex-chip" data-season="winter">Winter</button>
+          <button class="ex-chip" data-season="spring">Spring</button>
+          <button class="ex-chip" data-season="summer">Summer</button>
+          <button class="ex-chip" data-season="autumn">Autumn</button>
+        </div>
+        <div class="ex-group" role="group" aria-label="Terrain">
+          <span class="ex-group-label">Terrain</span>
+          <button class="ex-chip is-active" data-terrain="all">All</button>
+          <button class="ex-chip" data-terrain="unpaved">Unpaved</button>
+          <button class="ex-chip" data-terrain="paved">Paved</button>
+        </div>
+      </div>
+
+      <div class="ex-strip-wrap">
+        <button class="ex-step" id="ex-prev" aria-label="Previous scene"><i class="fas fa-chevron-left"></i></button>
+        <div id="ex-strip" aria-label="Scenes"></div>
+        <button class="ex-step" id="ex-next" aria-label="Next scene"><i class="fas fa-chevron-right"></i></button>
+      </div>
+
+      <div class="ex-grid">
+        <div class="ex-card">
+          <div class="ex-aerial-wrap">
+            <canvas id="ex-aerial" width="1024" height="1024" aria-label="Aerial tile with ground truth and prediction"></canvas>
+          </div>
+          <div class="ex-aerial-bar">
+            <div class="ex-group" role="group" aria-label="Heading setting">
+              <button class="ex-chip" data-setting="north_up">North-up</button>
+              <button class="ex-chip is-active" data-setting="imu_prior">IMU prior ±10°</button>
+            </div>
+            <div class="ex-group" role="group" aria-label="Layers">
+              <button class="ex-chip is-active" data-layer="gt" aria-pressed="true">Ground truth</button>
+              <button class="ex-chip is-active" data-layer="prediction" aria-pressed="true">Prediction</button>
+              <button class="ex-chip is-active" data-layer="posterior" aria-pressed="true">Posterior</button>
+              <button class="ex-chip is-active" data-layer="lidar" aria-pressed="true">LiDAR</button>
+            </div>
+          </div>
+          <div class="ex-legend">
+            <span class="lg-gt">ground truth</span>
+            <span class="lg-pred">prediction (Ours, RGB)</span>
+            <span class="lg-post">position posterior</span>
+            <span class="lg-lidar">LiDAR, coloured by height</span>
+          </div>
+          <p class="ex-setting-note" id="ex-setting-note"></p>
+        </div>
+
+        <div class="ex-right">
+          <div class="ex-card">
+            <div class="ex-tabs" role="tablist">
+              <button class="ex-tab is-active" role="tab" aria-selected="true" data-tab="cameras">Cameras</button>
+              <button class="ex-tab" role="tab" aria-selected="false" data-tab="lidar">LiDAR 3D</button>
+              <button class="ex-tab" role="tab" aria-selected="false" data-tab="map">Map</button>
+            </div>
+            <div class="ex-pane" data-pane="cameras">
+              <div class="ex-cams">
+                <figure class="ex-cam"><img id="ex-cam-front" alt=""><figcaption>front</figcaption></figure>
+                <figure class="ex-cam"><img id="ex-cam-right" alt=""><figcaption>right</figcaption></figure>
+                <figure class="ex-cam"><img id="ex-cam-back" alt=""><figcaption>back</figcaption></figure>
+                <figure class="ex-cam"><img id="ex-cam-left" alt=""><figcaption>left</figcaption></figure>
+              </div>
+              <p class="ex-pane-note">Click an image to enlarge it.</p>
+            </div>
+            <div class="ex-pane" data-pane="lidar" hidden>
+              <div id="ex-lidar3d"></div>
+              <p class="ex-pane-note">Drag to rotate, scroll to zoom. 30,000 of the sweep's points within 60 m; the yellow box is the vehicle.</p>
+            </div>
+            <div class="ex-pane" data-pane="map" hidden>
+              <div id="ex-map"></div>
+              <p class="ex-pane-note ex-map-legend">All 9,356 scenes:<span class="m-train">train</span><span class="m-dev">dev</span><span class="m-test">test</span><span class="m-shown">shown here</span></p>
+            </div>
+          </div>
+
+          <div class="ex-card ex-info">
+            <dl class="ex-facts">
+              <dt>Recorded</dt><dd id="ex-date"></dd>
+              <dt>Season</dt><dd class="cap" id="ex-season"></dd>
+              <dt>Terrain</dt><dd class="cap" id="ex-terrain"></dd>
+              <dt>Orthophoto</dt><dd id="ex-dop"></dd>
+              <dt>Time gap</dt><dd id="ex-gap"></dd>
+              <dt>GNSS error</dt><dd id="ex-gnss"></dd>
+            </dl>
+            <div class="ex-heading-wrap">
+              <canvas id="ex-heading" aria-label="Predicted heading distribution"></canvas>
+              <div class="ex-heading-caption">heading distribution, ground truth and prediction</div>
+            </div>
+            <div class="ex-errors">
+              <div><div class="ex-err-value" id="ex-err-loc"></div><div class="ex-err-label">position error</div></div>
+              <div><div class="ex-err-value" id="ex-err-ori"></div><div class="ex-err-label">heading error</div></div>
+            </div>
+            <div class="ex-id">scene <span id="ex-id"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="ex-attribution">
+    Aerial imagery: Datenquelle: Bayerische Vermessungsverwaltung – www.geodaten.bayern.de (CC BY 4.0).
+    Ground data CC BY-SA 4.0. Map data &copy; OpenStreetMap contributors.
+  </p>
+  <div id="ex-lightbox" hidden><img id="ex-lightbox-img" alt=""></div>
+</section>
+
+<section class="section" id="abstract">
   <div class="container is-max-desktop">
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
@@ -170,7 +326,7 @@
   <div class="container is-max-desktop">
 
     <!-- Dataset. -->
-    <div class="columns is-centered">
+    <div class="columns is-centered" id="dataset">
       <div class="column is-full-width">
         <h2 class="title is-3">The Dataset</h2>
         <div class="content has-text-justified">
@@ -232,7 +388,7 @@
     <!--/ Dataset. -->
 
     <!-- Method. -->
-    <div class="columns is-centered">
+    <div class="columns is-centered" id="method">
       <div class="column is-full-width">
         <h2 class="title is-3">RGB&ndash;LiDAR Baseline</h2>
         <div class="figure">
@@ -252,7 +408,7 @@
     <!--/ Method. -->
 
     <!-- Results. -->
-    <div class="columns is-centered">
+    <div class="columns is-centered" id="results">
       <div class="column is-full-width">
         <h2 class="title is-3">Benchmark Results</h2>
         <div class="content has-text-justified">
@@ -319,17 +475,35 @@
     <div class="columns is-centered" id="download">
       <div class="column is-full-width">
         <h2 class="title is-3">Download</h2>
-        <div class="content has-text-justified">
-          <!-- TODO: link to the UniBw library record / DOI and state the data license -->
+        <div class="content has-text-justified download-block">
           <p>
-            The dataset will be hosted by the library of the University of the Bundeswehr Munich and receive a
-            persistent DOI. Download links, the data license and a loader for PyTorch will be published here and in the
-            GitHub repository.
+            The dataset and the checkpoints of all methods are on the Hugging Face Hub at
+            <a href="https://huggingface.co/datasets/Skyy93/GOOSELoc">Skyy93/GOOSELoc</a> (about 75&nbsp;GB in total).
+            The data loader, the official evaluation and the code of all baselines are on
+            <a href="https://github.com/Skyy93/GOOSELoc">GitHub</a>. The code looks for the data in
+            <code>data/GOOSELoc</code> inside the repository:
           </p>
+<pre><code>git clone https://github.com/Skyy93/GOOSELoc.git && cd GOOSELoc
+pip install -e .
+pip install -U huggingface_hub
+hf download Skyy93/GOOSELoc --repo-type dataset --local-dir data/GOOSELoc
+gooseloc-check --checksums</code></pre>
           <p>
-            Orthophotos: &copy; Bayerische Vermessungsverwaltung. Ground data derived from
-            <a href="https://goose-dataset.de/">GOOSE</a>.
+            Parts can be downloaded on their own with <code>--include</code>, e.g.
+            <code>"aerial/*" "lidar/*"</code> for a LiDAR-only setup (30&nbsp;GB) or
+            <code>"checkpoints/gooselocnet/*"</code> for the checkpoints of our baseline.
           </p>
+          <h3 class="title is-5">License</h3>
+          <div class="results-table">
+            <table class="table is-narrow license-table">
+              <thead><tr><th>Part</th><th>License</th><th>Attribution</th></tr></thead>
+              <tbody>
+                <tr><td>Cameras, LiDAR, metadata</td><td><a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, like <a href="https://goose-dataset.de/">GOOSE</a></td><td>cite GOOSELoc and GOOSE</td></tr>
+                <tr><td>Aerial crops</td><td><a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, like DOP20</td><td>Datenquelle: Bayerische Vermessungsverwaltung – <a href="https://www.geodaten.bayern.de">www.geodaten.bayern.de</a></td></tr>
+                <tr><td>Code</td><td>MIT (FG² and CCVPE adapters GPL-3.0)</td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -353,7 +527,7 @@
 <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
-      <a class="icon-link" href="https://github.com/gooseloc" class="external-link">
+      <a class="icon-link external-link" href="https://github.com/Skyy93/GOOSELoc" aria-label="Code on GitHub">
         <i class="fab fa-github"></i>
       </a>
     </div>
@@ -363,7 +537,8 @@
           <p>
             This website is licensed under a <a rel="license"
                                                 href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
+            Commons Attribution-ShareAlike 4.0 International License</a>. Aerial imagery:
+            Datenquelle: Bayerische Vermessungsverwaltung – www.geodaten.bayern.de (CC BY 4.0).
             It is based on the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> project page template.
           </p>
         </div>
