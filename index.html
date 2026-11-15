@@ -13,6 +13,85 @@
   <meta property="og:image" content="https://gooseloc.github.io/static/images/teaser.webp">
   <meta property="og:url" content="https://gooseloc.github.io/">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://gooseloc.github.io/">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Dataset",
+        "@id": "https://gooseloc.github.io/#dataset",
+        "name": "GOOSELoc",
+        "alternateName": "GOOSELoc: A Multimodal Benchmark for Ground-to-Aerial Localization in Unstructured Off-Road Terrain",
+        "description": "GOOSELoc is a multimodal benchmark dataset for ground-to-aerial (cross-view) localization and pose estimation in unstructured off-road terrain. It contains 9,356 scenes, each with four time-synchronized surround-view RGB images (360° coverage), a 128-beam 3D LiDAR sweep and a geo-referenced 1024×1024 px aerial orthophoto crop (20 cm ground resolution, 204.8 m × 204.8 m), recorded across all four seasons in Upper Bavaria south of Munich. Train, dev and test splits cover geographically disjoint regions. Built on the German Outdoor and Offroad Dataset (GOOSE).",
+        "url": "https://gooseloc.github.io/",
+        "sameAs": "https://huggingface.co/datasets/Skyy93/GOOSELoc",
+        "image": "https://gooseloc.github.io/static/images/teaser.webp",
+        "keywords": [
+          "cross-view localization",
+          "cross-view pose estimation",
+          "ground-to-aerial localization",
+          "cross-view geo-localization",
+          "off-road",
+          "unstructured terrain",
+          "LiDAR",
+          "surround-view RGB",
+          "aerial orthophoto",
+          "benchmark",
+          "autonomous driving",
+          "robotics"
+        ],
+        "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "usageInfo": "Cameras, LiDAR and metadata: CC BY-SA 4.0. Aerial crops: CC BY 4.0 (Datenquelle: Bayerische Vermessungsverwaltung – www.geodaten.bayern.de).",
+        "isAccessibleForFree": true,
+        "isBasedOn": "https://goose-dataset.de/",
+        "spatialCoverage": {
+          "@type": "Place",
+          "name": "Upper Bavaria south of Munich, Germany"
+        },
+        "creator": [
+          {"@type": "Person", "name": "Fabian Deuser"},
+          {"@type": "Person", "name": "Peter Mortimer"},
+          {"@type": "Person", "name": "Robin-Nico Kampa"},
+          {"@type": "Person", "name": "Anna Bößendörfer"},
+          {"@type": "Person", "name": "Mirko Mählisch"},
+          {"@type": "Person", "name": "Martin Werner"},
+          {"@type": "Person", "name": "Norbert Oswald"}
+        ],
+        "distribution": {
+          "@type": "DataDownload",
+          "contentUrl": "https://huggingface.co/datasets/Skyy93/GOOSELoc",
+          "description": "Dataset and baseline checkpoints on the Hugging Face Hub, about 75 GB in total."
+        },
+        "citation": {"@id": "https://gooseloc.github.io/#paper"}
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "@id": "https://gooseloc.github.io/#paper",
+        "headline": "GOOSELoc: A Multimodal Benchmark for Ground-to-Aerial Localization in Unstructured Off-Road Terrain",
+        "url": "https://gooseloc.github.io/",
+        "sameAs": "https://arxiv.org/abs/2611.16162",
+        "author": [
+          {"@type": "Person", "name": "Fabian Deuser"},
+          {"@type": "Person", "name": "Peter Mortimer"},
+          {"@type": "Person", "name": "Robin-Nico Kampa"},
+          {"@type": "Person", "name": "Anna Bößendörfer"},
+          {"@type": "Person", "name": "Mirko Mählisch"},
+          {"@type": "Person", "name": "Martin Werner"},
+          {"@type": "Person", "name": "Norbert Oswald"}
+        ],
+        "isPartOf": {
+          "@type": "PublicationIssue",
+          "name": "Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) 2027"
+        },
+        "datePublished": "2027",
+        "about": {"@id": "https://gooseloc.github.io/#dataset"},
+        "codeRepository": "https://github.com/GOOSELoc/GOOSELoc"
+      }
+    ]
+  }
+  </script>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
